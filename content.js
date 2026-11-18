@@ -22,6 +22,8 @@ window.TV = {
 
   // Thời lượng mặc định mỗi tin (giây), khi tin không khai seconds.
   STORY_SECONDS: 40,
+  // Tốc độ dòng chạy Thông báo (px/giây), cố định dù nội dung dài hay ngắn.
+  TICKER_SPEED: 150,
 
   // ---- Bảng tin (khung lớn bên trái): thứ tự mảng = thứ tự chiếu ----
   //   id, tab (tên ngắn trên thanh story), title, tag (nhãn vàng, tuỳ chọn), sub (dòng phụ, tuỳ chọn)

@@ -128,9 +128,11 @@
 
   /* dòng chạy */
   .ticker { position: absolute; left: 0; right: 0; bottom: 0; height: 108px; display: flex; background: rgba(4,18,43,.9); border-top: 1.5px solid rgba(255,255,255,.16); z-index: 2; }
-  .ticker .tag { flex: 0 0 auto; display: flex; align-items: center; padding: 0 84px 0 56px; background: var(--red); font-family: var(--display); font-weight: 800; font-size: 40px; letter-spacing: .08em; text-transform: uppercase; -webkit-clip-path: polygon(0 0, 100% 0, calc(100% - 36px) 100%, 0 100%); clip-path: polygon(0 0, 100% 0, calc(100% - 36px) 100%, 0 100%); }
-  .ticker .run { flex: 1; overflow: hidden; display: flex; align-items: center; font-size: 38px; position: relative; }
-  .ticker .run::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 200px; z-index: 1; background: linear-gradient(90deg, #04122B 35%, rgba(4,18,43,0)); }
+  .ticker .tag { flex: 0 0 auto; display: flex; align-items: center; padding: 0 84px 0 56px; position: relative; z-index: 0; font-family: var(--display); font-weight: 800; font-size: 40px; letter-spacing: .08em; text-transform: uppercase; }
+  /* Vát cạnh phải bằng nền nghiêng thay cho clip-path có calc(): trình duyệt TV đời cũ bỏ qua cả clip-path nên nhãn thành hình chữ nhật. 18.43deg = atan(36/108) */
+  .ticker .tag::before { content: ""; position: absolute; top: 0; bottom: 0; left: -60px; right: 0; z-index: -1; background: var(--red); -webkit-transform-origin: 100% 0; transform-origin: 100% 0; -webkit-transform: skewX(-18.43deg); transform: skewX(-18.43deg); }
+  /* Mờ hai đầu bằng mask (không phủ lớp màu lên trên, hết vệt sáng 1px ở mép) */
+  .ticker .run { flex: 1; overflow: hidden; display: flex; align-items: center; font-size: 38px; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); }
   .ticker .run div { white-space: nowrap; display: flex; padding-left: 40px; animation: run 60s linear infinite; }
   .ticker .run div > * + * { margin-left: 110px; }
   .ticker .run i { font-style: normal; color: var(--yellow); margin-right: 26px; }
@@ -284,7 +286,15 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     (C.TICKER || []).forEach((m) => { if (typeof m === 'string') msgs.push(m); else if (alive(m) && forCS(m)) msgs.push(m.text); });
     const h = msgs.map((m) => `<span><i>★</i>${esc(m)}</span>`).join('');
     $('tv-run').innerHTML = h + h;
+    tickerSpeed();
   }
+  // Dòng chạy giữ tốc độ cố định TICKER_SPEED px/giây (khung 1920), nội dung dài hay ngắn đều chạy như nhau
+  const TICKER_SPEED = C.TICKER_SPEED || 150;
+  function tickerSpeed() {
+    const el = $('tv-run'), half = el.scrollWidth / 2;
+    if (half > 0) el.style.animationDuration = Math.max(8, half / TICKER_SPEED).toFixed(1) + 's';
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tickerSpeed);   // font về muộn làm chữ dài ra
 
   // ---------- Bảng tin xoay vòng ----------
   let sIdx = -1, storyT0 = 0, run = 0, mTimer = null, front = 'a', curVideo = null;
@@ -301,7 +311,9 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     const bg = $('media-bg'); bg.style.backgroundImage = 'url("' + src + '")'; bg.classList.add('on');
     swapTo(src);
   }
+  const VBLOB = {};   // src → blob URL của video đã tải trọn về máy (preloadStills), phát không giật dù mạng chậm
   function playVideo(src, maxSeconds, onDone) {
+    src = VBLOB[src] || src;
     $('media-a').classList.remove('on'); $('media-b').classList.remove('on'); $('media-bg').classList.remove('on'); stopVideo();
     const v = document.createElement('video'); v.muted = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.src = src;
     $('media').insertBefore(v, $('media-pts')); curVideo = v;
@@ -372,6 +384,11 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
   function preloadStills() {
     STORIES.forEach((st) => [].concat(st.image || [], st.cover || [], (st.slides || []).map((s) => s.src), (st.items || []).filter((it) => it.type === 'image').map((it) => it.src))
       .forEach((u) => { const im = new Image(); im.src = u; preloaded.push(im); }));
+    if (location.protocol === 'file:') return;
+    STORIES.forEach((st) => (st.items || []).filter((it) => it.type === 'video').forEach((it) => {
+      if (VBLOB[it.src]) return;
+      fetch(it.src).then((r) => (r.ok ? r.blob() : null)).then((b) => { if (b) VBLOB[it.src] = URL.createObjectURL(b); }).catch(() => {});
+    }));
   }
 
   // ---------- khung, đồng hồ, phím ----------
@@ -392,19 +409,28 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
 
   // ---------- tự tải lại khi có bản mới (chỉ khi chạy qua web, không phải mở file trực tiếp) ----------
   function hashStr(t) { let h = 5381; for (let k = 0; k < t.length; k++) h = ((h << 5) + h + t.charCodeAt(k)) | 0; return h + ':' + t.length; }
-  function fetchAll() {
-    return Promise.all(AUTO_RELOAD.files.map((f) => fetch(f + '?v=' + Date.now(), { cache: 'no-store' }).then((r) => (r.ok ? r.text() : '')).catch(() => '')))
+  // Lỗi bộ nhớ đệm: location.reload() chỉ hỏi lại máy chủ cho index.html, content.js vẫn lấy bản cũ trong cache (GitHub Pages giữ ~10 phút).
+  // Cách sửa: mốc so sánh = bản trong cache (đúng bản trang đang chạy); thấy khác bản trên máy chủ thì nạp mới vào cache (cache: 'reload') rồi mới F5.
+  // Không dùng ?v=Date.now() cho thẻ script để mất mạng lúc tải lại vẫn có bản cũ trong cache mà chiếu.
+  function fetchAll(mode) {
+    return Promise.all(AUTO_RELOAD.files.map((f) => fetch(mode === 'no-store' ? f + '?v=' + Date.now() : f, { cache: mode }).then((r) => (r.ok ? r.text() : '')).catch(() => '')))
       .then((texts) => texts.map(hashStr).join('|'));
+  }
+  function freshReload() {
+    let last = 0; try { last = +sessionStorage.getItem('tvReload') || 0; } catch (e) {}
+    if (Date.now() - last < 5 * 60000) return;                             // tối đa 5 phút một lần, phòng lặp tải lại
+    try { sessionStorage.setItem('tvReload', Date.now()); } catch (e) {}
+    fetchAll('reload').then(() => location.reload(), () => location.reload());
   }
   if (location.protocol !== 'file:') {
     let baseline = '';
-    fetchAll().then((h) => { baseline = h; });
-    setInterval(() => { fetchAll().then((h) => { if (baseline && h !== baseline && h.indexOf('5381:0') < 0) location.reload(); }); }, Math.max(30, AUTO_RELOAD.checkSeconds) * 1000);
+    fetchAll('force-cache').then((h) => { baseline = h; });
+    setInterval(() => { fetchAll('no-store').then((h) => { if (baseline && h !== baseline && h.indexOf('5381:0') < 0) freshReload(); }); }, Math.max(30, AUTO_RELOAD.checkSeconds) * 1000);
   }
   let lastDaily = '';
   setInterval(() => {
     const d = now(), hm = p2(d.getHours()) + ':' + p2(d.getMinutes()), key = todayKey() + ' ' + hm;
-    if (AUTO_RELOAD.dailyAt && hm === AUTO_RELOAD.dailyAt && lastDaily !== key) { lastDaily = key; location.reload(); }
+    if (AUTO_RELOAD.dailyAt && hm === AUTO_RELOAD.dailyAt && lastDaily !== key) { lastDaily = key; location.protocol === 'file:' ? location.reload() : freshReload(); }
   }, 20000);
 
   // ---------- khởi động ----------

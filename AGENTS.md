@@ -18,7 +18,9 @@ Dựng theo khung Bản tin TV của VTNet (`~/Documents/1. Viettel/3. VTNET/Int
 
 ## Công thức hay dùng
 - **Thêm tin có ảnh:** `sips -Z 1600 -s format jpeg -s formatOptions 80 "<ảnh gốc>" --out img/<ten-khong-dau>.jpg`, rồi thêm một mục vào `STORIES` (đặt `until` nếu chỉ chiếu vài ngày). Nhiều ảnh dùng `slides`.
-- **Thêm video:** chép vào `media/<ten>.mp4` (H.264), dùng `items: [{ type: 'video', src: 'media/<ten>.mp4' }]`.
+- **Thêm video:** chép vào `media/<ten>.mp4` (H.264), dùng `items: [{ type: 'video', src: 'media/<ten>.mp4' }]`. Nén về **≤ 10 MB** (cạnh dài ≤ 1280, bỏ tiếng vì TV phát câm): TV tải trọn file về máy lúc mở trang để phát không giật, file lớn thì tải lâu và tốn bộ nhớ TV.
+- **Ảnh thiết kế riêng cho Bảng tin (poster, thông báo):** khung ảnh trên TV 1920×1080 khoảng **1178×601** (tỷ lệ ~1,96:1, không phải 16:9) khi tin có tiêu đề + dòng `sub`. TV luôn hiện trọn ảnh (contain), phần trống phủ nền mờ; muốn kín khung thì dựng ảnh **1920×980**, chữ cách mép ≥ 32 px (khung bo góc 22 px).
+- **Dòng chạy:** tốc độ cố định `TICKER_SPEED` px/giây trong `content.js` (mặc định 150), không phụ thuộc độ dài nội dung.
 - **Vinh danh:** thêm `{ type, name, note, belt, until }` vào `HONORS`. Mã đai: trang, vang_trang, vang, xanh_vang, xanh, do_xanh, do, den_1 đến den_4. Ảnh chân dung (tuỳ chọn) `photo: 'img/vs-<ten>.jpg'`, ảnh vuông ~400px.
 - **Sinh nhật võ sinh:** `type: 'birthday'`, `from`/`to` quanh ngày sinh nhật để tự hiện, tự ẩn.
 - **Đổi lịch học:** sửa `SCHEDULE`. Lịch tạm (hè, Tết) thêm mục có `from`/`to`; nếu thay hẳn lịch thường thì thêm `to` cho mục cũ.
