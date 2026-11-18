@@ -23,50 +23,48 @@
   html, body { height: 100%; }
   body { margin: 0; overflow: hidden; background: #000; color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; cursor: none; }
   .stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform: translate(-50%, -50%) scale(var(--k, .5)); transform-origin: center; overflow: hidden;
-    background: radial-gradient(800px 640px at 6% 10%, rgba(232,35,42,.38), transparent 62%), radial-gradient(900px 700px at 98% 96%, rgba(0,174,239,.30), transparent 60%),
-      radial-gradient(600px 420px at 60% 0%, rgba(255,214,0,.10), transparent 70%), linear-gradient(135deg, #04122B 0%, #0A2556 55%, #061634 100%); }
+    background: radial-gradient(900px 700px at 6% 10%, rgba(232,35,42,.26), transparent 62%), radial-gradient(900px 700px at 98% 96%, rgba(0,71,171,.32), transparent 60%),
+      linear-gradient(135deg, #04122B 0%, #0A2152 55%, #061634 100%); }
 
   /* header: logo, tên cơ sở, đồng hồ; dải 4 màu logo bên dưới */
-  .hdr { position: absolute; left: 0; top: 0; right: 0; height: 120px; display: flex; align-items: center; justify-content: space-between; padding: 0 56px; background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,0)); z-index: 2; }
-  .hdr::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--blue) 50% 75%, var(--green) 75% 100%); }
+  .hdr { position: absolute; left: 0; top: 0; right: 0; height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,0)); z-index: 2; }
+  .hdr::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--blue) 50% 75%, var(--green) 75% 100%); }
   .brand { display: flex; align-items: center; }
-  .brand .logo { height: 92px; filter: drop-shadow(0 0 2px rgba(255,255,255,.55)) drop-shadow(0 6px 18px rgba(0,0,0,.45)); }
-  .brand .nm { margin-left: 28px; padding-left: 28px; border-left: 2px solid rgba(255,255,255,.22); }
-  .brand .nm b { display: block; font-family: var(--display); font-weight: 800; font-size: 44px; line-height: 1; text-transform: uppercase; letter-spacing: .02em; }
-  .brand .nm span { display: block; margin-top: 6px; font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1; color: var(--yellow); text-transform: uppercase; letter-spacing: .06em; }
+  .brand .logo { height: 70px; filter: drop-shadow(0 0 2px rgba(255,255,255,.55)) drop-shadow(0 6px 18px rgba(0,0,0,.45)); }
+  .brand .nm { margin-left: 24px; padding-left: 24px; border-left: 2px solid rgba(255,255,255,.22); }
+  .brand .nm b { display: block; font-family: var(--display); font-weight: 700; font-size: 32px; line-height: 1; text-transform: uppercase; letter-spacing: .02em; }
+  .brand .nm span { display: block; margin-top: 6px; font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1; color: var(--yellow); text-transform: uppercase; letter-spacing: .08em; }
   .hdr .c { display: flex; align-items: center; font-variant-numeric: tabular-nums; }
-  .hdr .c .d { font-size: 28px; color: var(--ink-2); text-align: right; line-height: 1.2; }
-  .hdr .c .t { font-family: var(--display); font-weight: 800; font-size: 76px; line-height: 1; }
-  .hdr .sample { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: .12em; color: var(--navy); background: var(--yellow); border-radius: 8px; padding: 6px 12px; }
+  .hdr .c .d { font-size: 26px; color: var(--ink-2); text-align: right; line-height: 1.2; }
+  .hdr .c .t { font-family: var(--display); font-weight: 800; font-size: 60px; line-height: 1; letter-spacing: -1px; }
+  .hdr .sample { font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: .12em; color: var(--navy); background: var(--yellow); border-radius: 8px; padding: 6px 12px; }
   .hdr .sample[hidden] { display: none; }
 
   .glass { position: relative; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.22); border-radius: 30px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 28px 70px rgba(0,0,0,.40); }
 
   /* bố cục: Bảng tin bên trái, 3 khung bên phải */
-  .dash { position: absolute; left: 0; right: 0; top: 120px; bottom: 108px; padding: 42px 56px 24px; display: grid; grid-template-columns: minmax(0, 1fr) 540px; gap: 32px; }
-  .panel { position: relative; padding: 42px 26px 12px; min-height: 0; display: flex; flex-direction: column; }
+  .dash { position: absolute; left: 0; right: 0; top: 100px; bottom: 108px; padding: 40px 64px 28px; display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 32px; }
+  .panel { position: relative; padding: 40px 26px 12px; min-height: 0; display: flex; flex-direction: column; }
   .panel .pg { position: absolute; right: 22px; top: 12px; font-size: 22px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  .panel .lbl { position: absolute; left: 24px; top: -24px; padding: 8px 22px; color: #fff; font-family: var(--display); font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: .06em; text-transform: uppercase; border-radius: 12px; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
-  .lbl.red { background: var(--red); } .lbl.green { background: var(--green); } .lbl.sky { background: var(--sky); color: var(--navy); } .lbl.yellow { background: var(--yellow); color: var(--navy); }
+  .panel .lbl { position: absolute; left: 26px; top: -22px; padding: 8px 20px; background: var(--red); color: #fff; font-family: var(--display); font-weight: 700; font-size: 26px; line-height: 1.1; letter-spacing: .1em; text-transform: uppercase; border-radius: 8px; white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
 
-  .feature { padding: 78px 28px 24px; margin-top: -16px; }
-  .feature > .lbl { top: -12px; }
+  .feature { padding: 62px 28px 22px; }
   /* thanh story: 1 ô / tin, tối đa 4 ô hiển thị, còn lại cuộn ngang */
-  .feature .tabs { position: absolute; left: 260px; right: 28px; top: 24px; overflow: hidden; z-index: 2; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
+  .feature .tabs { position: absolute; left: 210px; right: 28px; top: 10px; overflow: hidden; z-index: 2; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
   .feature .tabs .track { display: flex; transition: transform .6s ease; will-change: transform; align-items: stretch; }
   .feature .tabs .track > * + * { margin-left: 14px; }
-  .feature .tab { flex: 0 0 calc((100% - 14px * 3) / 4); min-width: 0; font-size: 20px; font-weight: 500; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
-  .feature .tab i { display: block; height: 6px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; margin-top: 9px; }
-  .feature .tab i b { display: block; height: 100%; width: 0; background: var(--yellow); }
+  .feature .tab { flex: 0 0 calc((100% - 14px * 3) / 4); min-width: 0; font-size: 19px; font-weight: 500; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+  .feature .tab i { display: block; height: 5px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; margin-top: 8px; }
+  .feature .tab i b { display: block; height: 100%; width: 0; background: var(--red); }
   .feature .tab.on { color: #fff; }
   .feature .tab.done i b { width: 100%; background: rgba(255,255,255,.5); }
   .feature .tabs .tab-count { flex: 0 0 auto; padding: 0 14px; display: flex; align-items: center; font-size: 19px; font-weight: 700; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  .feature .headline { margin: 0 0 16px; display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; column-gap: 20px; row-gap: 4px; font-family: var(--display); font-weight: 800; font-size: 48px; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; text-align: center; }
-  .feature .headline .tag { font-size: 22px; font-weight: 800; letter-spacing: .1em; color: var(--navy); background: var(--yellow); border-radius: 8px; padding: 7px 12px; align-self: center; line-height: 1; }
-  .feature .headline small { font-family: var(--body); font-weight: 400; font-size: 25px; text-transform: none; color: var(--ink-2); letter-spacing: 0; }
+  .feature .headline { margin: 6px 0 22px; display: flex; align-items: center; column-gap: 18px; min-width: 0; font-family: var(--display); font-weight: 700; font-size: 36px; line-height: 1.15; text-transform: uppercase; letter-spacing: .01em; }
+  .feature .headline > span:first-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .feature .headline .tag { flex: none; font-size: 18px; font-weight: 700; letter-spacing: .12em; color: var(--navy); background: var(--yellow); border-radius: 6px; padding: 7px 12px; line-height: 1; }
   .fade { animation: fd .7s ease both; }
   @keyframes fd { from { opacity: 0; transform: translateY(10px); } }
-  .media { position: relative; flex: 1; min-height: 0; border-radius: 22px; overflow: hidden; background: #000; }
+  .media { position: relative; flex: 1; min-height: 0; border-radius: 20px; overflow: hidden; background: #000; }
   .media .bg { position: absolute; top: -30px; right: -30px; bottom: -30px; left: -30px; background-position: center; background-size: cover; filter: blur(18px) brightness(.5); opacity: 0; transition: opacity .8s; }
   .media .bg.on { opacity: 1; }
   .media img.pic, .media video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .8s; }
@@ -76,10 +74,10 @@
   /* thẻ chữ đánh số (points) */
   .media .pts { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 110px; background: rgba(4,18,43,.55); opacity: 0; transition: opacity .8s; }
   .media .pts.on { opacity: 1; }
-  .media .pts div { display: flex; align-items: center; margin: 12px 0; font-size: 42px; font-weight: 700; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
-  .media .pts div i { flex: none; width: 74px; height: 74px; margin-right: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-family: var(--display); font-weight: 800; font-size: 44px; color: #fff; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
-  .media .pts.long div { font-size: 34px; margin: 9px 0; }
-  .media .pts.long div i { width: 62px; height: 62px; font-size: 36px; }
+  .media .pts div { display: flex; align-items: center; margin: 12px 0; font-size: 36px; font-weight: 700; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+  .media .pts div i { flex: none; width: 64px; height: 64px; margin-right: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-family: var(--display); font-weight: 800; font-size: 38px; color: #fff; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+  .media .pts.long div { font-size: 30px; margin: 9px 0; }
+  .media .pts.long div i { width: 54px; height: 54px; font-size: 32px; }
 
   /* bên phải: Ca học hôm nay (cao nhất), Vinh danh, Sắp diễn ra */
   .side { display: grid; grid-template-rows: minmax(0, 1.36fr) minmax(0, 1fr) minmax(0, 1.04fr); gap: 30px; min-height: 0; min-width: 0; }
@@ -91,12 +89,12 @@
   .panel .none small { display: block; margin-top: 8px; font-size: 22px; color: var(--ink-3); }
 
   /* ca học: giờ | lớp | trạng thái */
-  .cls .tm { flex: none; width: 104px; font-family: var(--display); font-weight: 800; font-size: 36px; line-height: .95; font-variant-numeric: tabular-nums; }
+  .cls .tm { flex: none; width: 92px; font-family: var(--display); font-weight: 700; font-size: 32px; line-height: .95; font-variant-numeric: tabular-nums; }
   .cls .tm small { display: block; font-family: var(--body); font-weight: 400; font-size: 18px; color: var(--ink-3); margin-top: 4px; }
   .cls .tx { flex: 1; min-width: 0; }
-  .cls .tx b { display: block; font-size: 26px; line-height: 1.2; }
-  .cls .tx small { display: block; font-size: 19px; line-height: 1.3; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cls .st { flex: none; margin-left: 12px; font-family: var(--display); font-weight: 800; font-size: 21px; letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; line-height: 1; text-align: center; }
+  .cls .tx b { display: block; font-size: 23px; font-weight: 700; line-height: 1.2; }
+  .cls .tx small { display: block; font-size: 18px; line-height: 1.3; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cls .st { flex: none; margin-left: 12px; font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; line-height: 1; text-align: center; }
   .cls.now { margin: 0 -12px; padding: 8px 12px; border-radius: 16px; background: rgba(0,176,80,.20); border-bottom-color: transparent; }
   .cls.now .st { background: var(--green); color: #fff; }
   .cls.now .st::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #fff; margin-right: 7px; vertical-align: 1px; animation: blink 1.2s ease-in-out infinite; }
@@ -106,33 +104,33 @@
 
   /* vinh danh: một thẻ một lượt */
   .hon { flex: 1; min-height: 0; display: flex; align-items: center; }
-  .hon .av { flex: none; position: relative; width: 136px; height: 136px; border-radius: 50%; background: #0A2556 center / cover no-repeat; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 800; font-size: 68px; border: 5px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  .hon .av { flex: none; position: relative; width: 112px; height: 112px; border-radius: 50%; background: #0A2556 center / cover no-repeat; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 800; font-size: 56px; border: 4px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
   .hon .av em { position: absolute; left: -8px; right: -8px; bottom: 6px; height: 16px; border-radius: 5px; box-shadow: 0 3px 8px rgba(0,0,0,.35); }
-  .hon .tx { flex: 1; margin-left: 26px; min-width: 0; }
-  .hon .kind { display: inline-block; font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; line-height: 1; }
+  .hon .tx { flex: 1; margin-left: 24px; min-width: 0; }
+  .hon .kind { display: inline-block; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; line-height: 1; }
   .hon .kind.star, .hon .kind.medal { background: var(--yellow); color: var(--navy); }
   .hon .kind.belt { background: var(--green); color: #fff; }
   .hon .kind.birthday { background: var(--red); color: #fff; }
-  .hon .tx b { display: block; margin-top: 10px; font-family: var(--display); font-weight: 800; font-size: 40px; line-height: 1; text-transform: uppercase; }
-  .hon .tx p { margin: 8px 0 0; font-size: 21px; line-height: 1.3; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .hon .tx b { display: block; margin-top: 10px; font-family: var(--display); font-weight: 700; font-size: 32px; line-height: 1; text-transform: uppercase; }
+  .hon .tx p { margin: 8px 0 0; font-size: 19px; line-height: 1.3; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .hon .tx p i { font-style: normal; font-weight: 700; color: #fff; }
 
   /* sắp diễn ra: ô lịch ngày | sự kiện */
-  .evt .dt { flex: none; width: 70px; margin-right: 18px; border-radius: 12px; overflow: hidden; text-align: center; background: #fff; color: var(--navy); }
+  .evt .dt { flex: none; width: 64px; margin-right: 18px; border-radius: 12px; overflow: hidden; text-align: center; background: #fff; color: var(--navy); }
   .evt .dt small { display: block; background: var(--red); color: #fff; font-size: 15px; font-weight: 700; padding: 3px 0; text-transform: uppercase; }
-  .evt .dt b { display: block; font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1.1; }
+  .evt .dt b { display: block; font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.1; }
   .evt .tx { flex: 1; min-width: 0; }
-  .evt .tx b { display: block; font-size: 23px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .evt .tx small { display: block; font-size: 19px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .evt .tx b { display: block; font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .evt .tx small { display: block; font-size: 18px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .evt .tx small i { font-style: normal; font-weight: 700; color: var(--yellow); }
 
   /* dòng chạy */
   .ticker { position: absolute; left: 0; right: 0; bottom: 0; height: 108px; display: flex; background: rgba(4,18,43,.9); border-top: 1.5px solid rgba(255,255,255,.16); z-index: 2; }
-  .ticker .tag { flex: 0 0 auto; display: flex; align-items: center; padding: 0 84px 0 56px; position: relative; z-index: 0; font-family: var(--display); font-weight: 800; font-size: 40px; letter-spacing: .08em; text-transform: uppercase; }
+  .ticker .tag { flex: 0 0 auto; display: flex; align-items: center; padding: 0 84px 0 56px; position: relative; z-index: 0; font-family: var(--display); font-weight: 700; font-size: 34px; letter-spacing: .1em; text-transform: uppercase; }
   /* Vát cạnh phải bằng nền nghiêng thay cho clip-path có calc(): trình duyệt TV đời cũ bỏ qua cả clip-path nên nhãn thành hình chữ nhật. 18.43deg = atan(36/108) */
   .ticker .tag::before { content: ""; position: absolute; top: 0; bottom: 0; left: -60px; right: 0; z-index: -1; background: var(--red); -webkit-transform-origin: 100% 0; transform-origin: 100% 0; -webkit-transform: skewX(-18.43deg); transform: skewX(-18.43deg); }
   /* Mờ hai đầu bằng mask (không phủ lớp màu lên trên, hết vệt sáng 1px ở mép) */
-  .ticker .run { flex: 1; overflow: hidden; display: flex; align-items: center; font-size: 38px; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); }
+  .ticker .run { flex: 1; overflow: hidden; display: flex; align-items: center; font-size: 34px; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 60px), transparent); }
   .ticker .run div { white-space: nowrap; display: flex; padding-left: 40px; animation: run 60s linear infinite; }
   .ticker .run div > * + * { margin-left: 110px; }
   .ticker .run i { font-style: normal; color: var(--yellow); margin-right: 26px; }
@@ -151,15 +149,15 @@
 
   <section class="dash">
     <div class="glass panel feature">
-      <span class="lbl red">Bảng tin</span>
+      <span class="lbl">Bảng tin</span>
       <div class="tabs" id="tabs"></div>
       <h2 class="headline" id="dash-headline"></h2>
       <div class="media" id="media"><div class="bg" id="media-bg"></div><img class="pic" id="media-a" alt=""><img class="pic" id="media-b" alt=""><div class="pts" id="media-pts"></div><div class="count" id="media-count"></div></div>
     </div>
     <div class="side">
-      <div class="glass panel"><span class="lbl green">Ca học hôm nay</span><span class="pg"></span><ul id="p-class"></ul></div>
-      <div class="glass panel"><span class="lbl yellow">Vinh danh võ sinh</span><span class="pg"></span><div class="hon" id="p-honor"></div></div>
-      <div class="glass panel"><span class="lbl sky">Sắp diễn ra</span><span class="pg"></span><ul id="p-next"></ul></div>
+      <div class="glass panel"><span class="lbl">Ca học hôm nay</span><span class="pg"></span><ul id="p-class"></ul></div>
+      <div class="glass panel"><span class="lbl">Vinh danh võ sinh</span><span class="pg"></span><div class="hon" id="p-honor"></div></div>
+      <div class="glass panel"><span class="lbl">Sắp diễn ra</span><span class="pg"></span><ul id="p-next"></ul></div>
     </div>
   </section>
 
@@ -171,14 +169,16 @@
 window.onerror = function (msg, src, line) { var e = document.getElementById('err'); if (!e) return; e.style.display = 'block'; e.textContent = 'Lỗi trang: ' + msg + (line ? ' (dòng ' + line + ')' : '') + ' · Trình duyệt: ' + navigator.userAgent; };
 </script>
 <script src="content.js"></script>
+<script src="tin.js"></script>
 <script>
-(function () {
+// Chờ ghép tin đăng từ dang-tin.html (tin.js) vào window.TV rồi mới chạy
+function bootTV() {
   'use strict';
   const C = window.TV || {};
   const STORY_SECONDS = C.STORY_SECONDS || 40;
   const VIDEO_MAX_SECONDS = 90, HONOR_SECONDS = 8, PAGE_SECONDS = 7, SOON_MINUTES = 30;
   // Tự cập nhật: thấy index.html hoặc content.js trên máy chủ khác bản đang chạy thì tự F5; mỗi ngày tải lại lúc dailyAt.
-  const AUTO_RELOAD = { checkSeconds: 120, dailyAt: '05:00', files: ['index.html', 'content.js'] };
+  const AUTO_RELOAD = { checkSeconds: 120, dailyAt: '05:00', files: ['index.html', 'content.js', 'tin.js'] };
 
   // Màu đai, cùng bảng với website (assets/js/core/config.js)
   const BELTS = {
@@ -313,6 +313,7 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
   }
   const VBLOB = {};   // src → blob URL của video đã tải trọn về máy (preloadStills), phát không giật dù mạng chậm
   function playVideo(src, maxSeconds, onDone) {
+    if (/^tin:/.test(src) && !VBLOB[src]) { mTimer = setTimeout(() => showStory(sIdx + 1), 1500); return; }   // video đăng lên chưa tải xong: sang tin kế
     src = VBLOB[src] || src;
     $('media-a').classList.remove('on'); $('media-b').classList.remove('on'); $('media-bg').classList.remove('on'); stopVideo();
     const v = document.createElement('video'); v.muted = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.src = src;
@@ -323,15 +324,15 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     mTimer = setTimeout(go, 15000);
     const pr = v.play && v.play(); if (pr && pr.catch) pr.catch(() => {});
   }
-  function renderHead(st, sub) {
-    $('dash-headline').innerHTML = `<span>${esc(st.title)}</span>${st.tag ? `<span class="tag">${esc(st.tag)}</span>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}`;
+  // Tiêu đề một dòng, căn trái thẳng mép ảnh (giống Bản tin TV VTNet); dòng phụ sub không hiện nữa để khung ảnh giữ cố định
+  function renderHead(st) {
+    $('dash-headline').innerHTML = `<span>${esc(st.title)}</span>${st.tag ? `<span class="tag">${esc(st.tag)}</span>` : ''}`;
   }
   function showSlides(st, k, r) {
     if (r !== run) return;
     const list = st.slides, s = list[k % list.length];
     showStill(s.src);
     $('media-count').textContent = (k % list.length + 1) + ' / ' + list.length;
-    if (k > 0 && s.sub !== list[(k - 1) % list.length].sub) { renderHead(st, s.sub || st.sub); fadeIn($('dash-headline')); }
     mTimer = setTimeout(() => showSlides(st, k + 1, r), (s.seconds || st.slideSeconds || 8) * 1000);
   }
   function showItems(st, k, r) {
@@ -367,7 +368,7 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     if (!STORIES.length) { renderHead({ title: C.CENTER && C.CENTER.name || 'Taekwondo Kids' }); return; }
     sIdx = ((i % STORIES.length) + STORIES.length) % STORIES.length; storyT0 = performance.now();
     const st = STORIES[sIdx], r = ++run;
-    reset(); renderTabs(); renderHead(st, st.slides && st.slides[0] && st.slides[0].sub || st.sub); fadeIn($('dash-headline')); fadeIn($('media'));
+    reset(); renderTabs(); renderHead(st); fadeIn($('dash-headline')); fadeIn($('media'));
     if (st.points && st.points.length) showPoints(st);
     else if (st.items && st.items.length) showItems(st, 0, r);
     else if (st.slides && st.slides.length) showSlides(st, 0, r);
@@ -387,7 +388,9 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     if (location.protocol === 'file:') return;
     STORIES.forEach((st) => (st.items || []).filter((it) => it.type === 'video').forEach((it) => {
       if (VBLOB[it.src]) return;
-      fetch(it.src).then((r) => (r.ok ? r.blob() : null)).then((b) => { if (b) VBLOB[it.src] = URL.createObjectURL(b); }).catch(() => {});
+      const m = /^tin:(.+)$/.exec(it.src);                                       // video đăng từ dang-tin.html: lấy qua Apps Script
+      (m ? window.TIN.fileBlob(m[1]) : fetch(it.src).then((r) => (r.ok ? r.blob() : null)))
+        .then((b) => { if (b) VBLOB[it.src] = URL.createObjectURL(b); }).catch(() => {});
     }));
   }
 
@@ -423,6 +426,7 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
     fetchAll('reload').then(() => location.reload(), () => location.reload());
   }
   if (location.protocol !== 'file:') {
+    if (window.TIN) TIN.watch(120);   // tin đăng mới hoặc bị gỡ thì tải lại trang
     let baseline = '';
     fetchAll('force-cache').then((h) => { baseline = h; });
     setInterval(() => { fetchAll('no-store').then((h) => { if (baseline && h !== baseline && h.indexOf('5381:0') < 0) freshReload(); }); }, Math.max(30, AUTO_RELOAD.checkSeconds) * 1000);
@@ -445,6 +449,10 @@ window.onerror = function (msg, src, line) { var e = document.getElementById('er
   preloadStills();
   const m = /^#(\d+)$/.exec(location.hash);                                        // #2 mở thẳng tin số 2
   showStory(m ? +m[1] - 1 : 0); requestAnimationFrame(storyLoop);
+}
+(function () {
+  let booted = false; const go = () => { if (!booted) { booted = true; bootTV(); } };
+  if (window.TIN) TIN.loadForTV(window.TV = window.TV || {}).then(go, go); else go();
 })();
 </script>
 </body>

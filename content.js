@@ -26,11 +26,11 @@ window.TV = {
   TICKER_SPEED: 150,
 
   // ---- Bảng tin (khung lớn bên trái): thứ tự mảng = thứ tự chiếu ----
-  //   id, tab (tên ngắn trên thanh story), title, tag (nhãn vàng, tuỳ chọn), sub (dòng phụ, tuỳ chọn)
+  //   id, tab (tên ngắn trên thanh story), title (một dòng, ≤ 48 ký tự), tag (nhãn vàng, tuỳ chọn). Không còn dòng phụ sub
   //   seconds · until: 'YYYY-MM-DD' tự ẩn sau ngày này · cs · ticker: câu (hoặc mảng câu) thêm vào dòng chạy
   // Chọn MỘT kiểu nội dung:
   //   image: 'img/...'                              một ảnh, poster tĩnh
-  //   slides: [{ src, sub? }], slideSeconds         nhiều ảnh lần lượt, có bộ đếm n / tổng
+  //   slides: [{ src, seconds? }], slideSeconds        nhiều ảnh lần lượt, có bộ đếm n / tổng
   //   items: [{ type: 'video', src }, { type: 'image', src, seconds? }]   video phát hết thì sang mục kế
   //   points: ['...', '...'], cover?: 'img/...'     thẻ chữ đánh số (nội quy, tinh thần võ đạo); cover = ảnh nền mờ
   STORIES: [

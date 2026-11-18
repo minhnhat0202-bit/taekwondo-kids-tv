@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<title>Đăng tin lên TV · Taekwondo Kids</title>
+<!-- Trang đăng tin lên màn hình TV các cơ sở, không qua duyệt; cần mã PIN cơ sở. Máy chủ: apps-script/tin.gs, mã dùng chung: tin.js -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8232A; --red-d: #C3161D; --yellow: #FFD600; --blue: #0047AB; --green: #00B050; --navy: #04122B;
+    --bg: #F3F5F9; --card: #FFFFFF; --ink: #0B1B36; --ink-2: #4A5874; --ink-3: #7B879E; --line: #DCE2EC;
+    --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif; --body: "Be Vietnam Pro", Roboto, "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--body); -webkit-text-size-adjust: 100%; }
+  header { background: var(--navy); color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 5; }
+  header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 4px; background: linear-gradient(90deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--blue) 50% 75%, var(--green) 75% 100%); }
+  header img { height: 40px; }
+  header h1 { margin: 0; font: 700 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: .03em; }
+  header h1 small { display: block; font-size: 15px; color: var(--yellow); letter-spacing: .08em; margin-top: 2px; }
+  header .sp { flex: 1; }
+  header button { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4); border-radius: 8px; padding: 6px 10px; font: 500 13px var(--body); }
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  .card { background: var(--card); border-radius: 16px; padding: 20px 16px; box-shadow: 0 1px 3px rgba(4,18,43,.08); margin-bottom: 16px; }
+  h2 { margin: 0 0 12px; font: 700 22px/1.2 var(--display); text-transform: uppercase; letter-spacing: .03em; }
+  label { display: block; font-weight: 500; font-size: 15px; margin: 14px 0 6px; }
+  label .opt { font-weight: 400; color: var(--ink-3); }
+  label .cnt { float: right; font-weight: 400; color: var(--ink-3); font-size: 13px; font-variant-numeric: tabular-nums; }
+  input[type=text], input[type=date], input[type=password], input[type=tel], select, textarea {
+    width: 100%; font: 16px var(--body); color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; min-height: 46px; }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,71,171,.15); }
+  .row { display: flex; gap: 12px; } .row > * { flex: 1; min-width: 0; }
+  .hint { font-size: 13px; color: var(--ink-3); margin: 6px 0 0; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 50px; margin-top: 20px; border: 0; border-radius: 12px; background: var(--red); color: #fff; font: 700 20px var(--display); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
+  .btn:active { background: var(--red-d); } .btn:disabled { opacity: .55; cursor: default; }
+  .btn.ghost { background: transparent; color: var(--ink-2); border: 1.5px solid var(--line); font-size: 17px; }
+  /* chọn loại tin */
+  .seg { display: flex; background: #E7EBF2; border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 4px; }
+  .seg button { flex: 1; min-height: 44px; border: 0; border-radius: 9px; background: transparent; font: 600 15px var(--body); color: var(--ink-2); cursor: pointer; }
+  .seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(4,18,43,.15); }
+  .pane[hidden] { display: none; }
+  /* chọn cơ sở (PIN toàn hệ thống) */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips label { margin: 0; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 999px; font-weight: 500; font-size: 14px; cursor: pointer; background: #fff; }
+  .chips input { margin: 0; accent-color: var(--red); }
+  .chips label:has(input:checked) { border-color: var(--red); background: #FFF1F1; }
+  /* ảnh, video */
+  .drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 110px; border: 2px dashed var(--line); border-radius: 12px; color: var(--ink-2); text-align: center; padding: 12px; cursor: pointer; background: #FAFBFD; }
+  .drop b { color: var(--blue); }
+  .drop input { display: none; }
+  .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; margin-top: 10px; }
+  .thumbs div { position: relative; aspect-ratio: 1.85; border-radius: 8px; overflow: hidden; background: #000 center / contain no-repeat; }
+  .thumbs div button { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+  .thumbs div span { position: absolute; left: 4px; bottom: 4px; background: rgba(0,0,0,.6); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 4px; }
+  .vid { margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #EEF3FB; font-size: 14px; }
+  .vid span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vid button { border: 0; background: transparent; color: var(--red); font: 600 14px var(--body); cursor: pointer; }
+  .note { margin: 16px 0 0; padding: 12px 14px; border-radius: 10px; background: #FFF8D6; color: #5C4A00; font-size: 14px; }
+  .msg { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 15px; }
+  .msg.ok { background: #E3F6EC; color: #0A5A2F; } .msg.err { background: #FDE8E8; color: #8A1116; }
+  .msg:empty { display: none; }
+  /* danh sách tin */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .item { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1.5px solid var(--line); border-radius: 12px; }
+  .item .th { flex: none; width: 76px; height: 40px; border-radius: 6px; background: #E7EBF2 center / cover no-repeat; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .item .tx { flex: 1; min-width: 0; }
+  .item .tx b { display: block; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
+  .item .tx small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+  .item .st { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; margin-right: 6px; }
+  .st.live { background: #E3F6EC; color: #0A5A2F; } .st.scheduled { background: #E6EEFB; color: #0B3A82; } .st.expired { background: #ECEEF2; color: #6B7488; }
+  .item button { flex: none; border: 1.5px solid var(--line); background: #fff; color: var(--red); border-radius: 8px; padding: 6px 12px; font: 600 14px var(--body); cursor: pointer; }
+  .empty { color: var(--ink-3); font-size: 15px; }
+  .demo { background: var(--yellow); color: var(--navy); text-align: center; font-size: 13px; font-weight: 700; padding: 6px 12px; }
+  .links { text-align: center; font-size: 14px; color: var(--ink-3); }
+  .links a { color: var(--blue); }
+</style>
+</head>
+<body>
+<header>
+  <img src="img/logo.png" alt="Taekwondo Kids">
+  <h1>Đăng tin lên TV<small id="who"></small></h1>
+  <span class="sp"></span>
+  <button id="logout" hidden>Đổi cơ sở</button>
+</header>
+<div class="demo" id="demo" hidden>Chế độ thử: tin chỉ lưu trong trình duyệt này. PIN thử: 000000 (mọi cơ sở), 111111 (Hapulico).</div>
+
+<main>
+  <!-- Bước 1: nhập PIN -->
+  <section class="card" id="login">
+    <h2>Nhập mã PIN cơ sở</h2>
+    <p class="hint" style="margin-top:0">Mỗi cơ sở có một mã PIN riêng, tin đăng bằng PIN nào sẽ lên TV của cơ sở đó. Chưa có mã thì hỏi người quản lý trang.</p>
+    <form id="f-login">
+      <label for="pin">Mã PIN</label>
+      <input type="password" id="pin" inputmode="numeric" autocomplete="current-password" required minlength="4" maxlength="12">
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400"><input type="checkbox" id="remember" checked> Nhớ mã trên máy này</label>
+      <button class="btn" type="submit">Vào</button>
+      <div class="msg" id="m-login"></div>
+    </form>
+  </section>
+
+  <!-- Bước 2: đăng tin -->
+  <section id="app" hidden>
+    <div class="card">
+      <div class="seg" role="tablist">
+        <button type="button" data-k="story" class="on">Bảng tin</button>
+        <button type="button" data-k="ticker">Thông báo</button>
+        <button type="button" data-k="event">Sự kiện</button>
+      </div>
+
+      <form id="f-post" novalidate>
+        <div id="cs-box" hidden>
+          <label>Đăng lên TV cơ sở <span class="opt">(không chọn = mọi cơ sở)</span></label>
+          <div class="chips" id="cs-list"></div>
+        </div>
+
+        <div class="pane" data-k="story">
+          <label for="s-title">Tiêu đề <span class="cnt" data-for="s-title"></span></label>
+          <input type="text" id="s-title" maxlength="48" placeholder="VD: Kỳ thi lên đai tháng 12/2026">
+          <label for="s-tag">Nhãn vàng <span class="opt">(tuỳ chọn)</span> <span class="cnt" data-for="s-tag"></span></label>
+          <input type="text" id="s-tag" maxlength="14" placeholder="VD: Chúc mừng">
+          <label>Ảnh hoặc video</label>
+          <label class="drop" id="drop">
+            <input type="file" id="files" accept="image/*,video/mp4" multiple>
+            <b>Chọn ảnh (tối đa 8) hoặc 1 video MP4</b>
+            <span class="hint" style="margin:0">Ảnh ngang vừa khung nhất. Video ≤ 10 MB, ≤ 90 giây, TV phát không tiếng.</span>
+          </label>
+          <div class="thumbs" id="thumbs"></div>
+          <div id="vid"></div>
+          <div id="sec-box">
+            <label for="s-sec">Mỗi ảnh chiếu</label>
+            <select id="s-sec"><option value="5">5 giây</option><option value="8" selected>8 giây</option><option value="10">10 giây</option><option value="15">15 giây</option></select>
+          </div>
+        </div>
+
+        <div class="pane" data-k="ticker" hidden>
+          <label for="t-text">Nội dung thông báo <span class="cnt" data-for="t-text"></span></label>
+          <textarea id="t-text" maxlength="120" placeholder="VD: Võ đường nghỉ tập Chủ nhật 30/11, các lớp học bù vào Thứ Bảy 6/12"></textarea>
+          <p class="hint">Chạy chữ dưới chân màn hình. Viết một câu ngắn, đủ ý.</p>
+        </div>
+
+        <div class="pane" data-k="event" hidden>
+          <label for="e-title">Tên sự kiện <span class="cnt" data-for="e-title"></span></label>
+          <input type="text" id="e-title" maxlength="48" placeholder="VD: Thi lên đai kỳ tháng 12">
+          <div class="row">
+            <div><label for="e-from">Ngày</label><input type="date" id="e-from"></div>
+            <div><label for="e-to">Đến ngày <span class="opt">(nếu nhiều ngày)</span></label><input type="date" id="e-to"></div>
+          </div>
+          <div class="row">
+            <div><label for="e-time">Giờ <span class="opt">(tuỳ chọn)</span></label><input type="text" id="e-time" maxlength="20" placeholder="VD: 8:00"></div>
+            <div><label for="e-place">Địa điểm <span class="opt">(tuỳ chọn)</span></label><input type="text" id="e-place" maxlength="40" placeholder="VD: Nhà thi đấu"></div>
+          </div>
+          <p class="hint">Hiện ở khung Sắp diễn ra, tự ẩn khi sự kiện qua.</p>
+        </div>
+
+        <div class="row" id="dates">
+          <div><label for="d-from">Chiếu từ ngày</label><input type="date" id="d-from"></div>
+          <div><label for="d-until">Đến hết ngày</label><input type="date" id="d-until"></div>
+        </div>
+
+        <p class="note">Ảnh, tên võ sinh chỉ đăng khi phụ huynh đồng ý. Không ghi số điện thoại, trường lớp của võ sinh.</p>
+        <button class="btn" type="submit" id="send">Đăng lên TV</button>
+        <div class="msg" id="m-post"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Tin đang có</h2>
+      <div class="list" id="list"><p class="empty">Đang tải…</p></div>
+    </div>
+    <p class="links" id="links"></p>
+  </section>
+</main>
+
+<script src="content.js"></script>
+<script src="tin.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const BR = (window.TV && window.TV.BRANCHES) || {};
+  const vn = (iso) => (iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) : '');
+  const today = TIN.dayKey();
+  let PIN = '', CS = '', kind = 'story', pics = [], video = null;
+
+  $('demo').hidden = !TIN.isDemo();
+  function msg(id, text, ok) { const m = $(id); m.className = 'msg ' + (ok ? 'ok' : 'err'); m.textContent = text || ''; }
+
+  // ---------- PIN ----------
+  function enter(pin, silent) {
+    return TIN.call('login', { pin: pin }).then((j) => {
+      PIN = pin; CS = j.cs;
+      if ($('remember').checked || silent) TIN.store(TIN.KEY.pin, pin); else TIN.store(TIN.KEY.pin, null);
+      $('who').textContent = CS === '*' ? 'Toàn hệ thống' : (BR[CS] || CS);
+      $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false;
+      $('cs-box').hidden = CS !== '*';
+      $('cs-list').innerHTML = Object.keys(BR).map((k) => `<label><input type="checkbox" value="${esc(k)}">${esc(BR[k].replace(/^Cơ sở\s+/, ''))}</label>`).join('');
+      $('links').innerHTML = CS === '*' ? 'Xem TV: ' + Object.keys(BR).map((k) => `<a href="index.html?cs=${esc(k)}" target="_blank">${esc(k)}</a>`).join(' · ')
+        : `<a href="index.html?cs=${esc(CS)}" target="_blank">Xem màn hình TV ${esc(BR[CS] || CS)}</a>`;
+      loadList();
+    });
+  }
+  $('f-login').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const b = e.target.querySelector('button'); b.disabled = true; msg('m-login', '');
+    enter($('pin').value.trim()).catch((x) => msg('m-login', x.message)).then(() => { b.disabled = false; });
+  });
+  $('logout').addEventListener('click', () => { TIN.store(TIN.KEY.pin, null); location.reload(); });
+  const saved = TIN.store(TIN.KEY.pin);
+  if (saved) enter(saved, true).catch(() => TIN.store(TIN.KEY.pin, null));
+
+  // ---------- loại tin ----------
+  function setKind(k) {
+    kind = k;
+    document.querySelectorAll('.seg button').forEach((b) => b.classList.toggle('on', b.dataset.k === k));
+    document.querySelectorAll('.pane').forEach((p) => { p.hidden = p.dataset.k !== k; });
+    $('dates').hidden = k === 'event'; msg('m-post', '');
+  }
+  document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => setKind(b.dataset.k)));
+  $('d-from').value = today; $('d-until').value = TIN.addDays(today, 7); $('e-from').min = today;
+
+  // đếm ký tự
+  document.querySelectorAll('.cnt').forEach((c) => {
+    const el = $(c.dataset.for), up = () => { c.textContent = el.value.length + '/' + el.maxLength; };
+    el.addEventListener('input', up); up();
+  });
+
+  // ---------- ảnh, video ----------
+  function paintMedia() {
+    $('thumbs').innerHTML = pics.map((p, i) => `<div style="background-image:url('${p.preview}')"><span>${i + 1}</span><button type="button" data-i="${i}" aria-label="Bỏ ảnh">×</button></div>`).join('');
+    $('vid').innerHTML = video ? `<div class="vid">🎬 <span>${esc(video.name)} · ${(video.size / 1048576).toFixed(1)} MB${video.seconds ? ' · ' + video.seconds + ' giây' : ''}</span><button type="button" id="vid-x">Bỏ</button></div>` : '';
+    $('sec-box').hidden = !(pics.length > 1);
+    $('drop').hidden = !!video || pics.length >= TIN.LIMITS.images;
+  }
+  $('thumbs').addEventListener('click', (e) => { const i = e.target.dataset.i; if (i !== undefined) { pics.splice(+i, 1); paintMedia(); } });
+  $('vid').addEventListener('click', (e) => { if (e.target.id === 'vid-x') { video = null; paintMedia(); } });
+  $('files').addEventListener('change', (e) => {
+    const list = Array.from(e.target.files || []); e.target.value = ''; msg('m-post', '');
+    const vids = list.filter((f) => /^video\//.test(f.type)), imgs = list.filter((f) => /^image\//.test(f.type));
+    if (vids.length) {
+      if (pics.length || imgs.length || vids.length > 1) return msg('m-post', 'Mỗi tin chọn ảnh HOẶC một video, không trộn lẫn.');
+      msg('m-post', 'Đang đọc video…', true);
+      return TIN.packVideo(vids[0]).then((v) => { video = v; paintMedia(); msg('m-post', ''); }, (x) => msg('m-post', x.message));
+    }
+    const room = TIN.LIMITS.images - pics.length;
+    if (imgs.length > room) msg('m-post', 'Tối đa ' + TIN.LIMITS.images + ' ảnh, đã bỏ bớt ảnh thừa.');
+    Promise.all(imgs.slice(0, room).map(TIN.packImage)).then((a) => { pics = pics.concat(a); paintMedia(); }, (x) => msg('m-post', x.message));
+  });
+  paintMedia();
+
+  // ---------- đăng ----------
+  $('f-post').addEventListener('submit', (e) => {
+    e.preventDefault(); msg('m-post', '');
+    const v = (id) => $(id).value.trim(), rec = { kind: kind };
+    if (CS === '*') rec.cs = Array.from(document.querySelectorAll('#cs-list input:checked')).map((i) => i.value);
+    if (kind !== 'event') {
+      rec.from = v('d-from') || today; rec.until = v('d-until');
+      if (!rec.until) return msg('m-post', 'Chọn ngày kết thúc để tin tự gỡ khỏi TV.');
+      if (rec.until < rec.from) return msg('m-post', 'Ngày kết thúc phải sau ngày bắt đầu.');
+    }
+    const payload = { pin: PIN, record: rec };
+    if (kind === 'story') {
+      rec.title = v('s-title'); rec.tag = v('s-tag'); rec.seconds = +$('s-sec').value;
+      if (!rec.title) return msg('m-post', 'Nhập tiêu đề.');
+      if (!pics.length && !video) return msg('m-post', 'Chọn ít nhất một ảnh hoặc một video.');
+      if (video) payload.video = { name: video.name, type: video.type, data: video.data, seconds: video.seconds };
+      else payload.files = pics.map((p) => ({ name: p.name, type: p.type, data: p.data, w: p.w, h: p.h }));
+    }
+    if (kind === 'ticker') { rec.text = v('t-text'); if (!rec.text) return msg('m-post', 'Nhập nội dung thông báo.'); }
+    if (kind === 'event') {
+      rec.title = v('e-title'); rec.event = { from: v('e-from'), to: v('e-to'), time: v('e-time'), place: v('e-place') };
+      if (!rec.title || !rec.event.from) return msg('m-post', 'Nhập tên và ngày sự kiện.');
+      if (rec.event.to && rec.event.to < rec.event.from) return msg('m-post', '"Đến ngày" phải sau ngày bắt đầu.');
+    }
+    const b = $('send'); b.disabled = true; b.textContent = video || pics.length > 2 ? 'Đang tải lên…' : 'Đang đăng…';
+    TIN.call('post', payload).then(() => {
+      msg('m-post', (rec.from && rec.from > today ? 'Đã lưu. Tin lên TV từ ngày ' + vn(rec.from) + '.' : 'Đã đăng. TV cập nhật trong khoảng 2 phút.'), true);
+      ['s-title', 's-tag', 't-text', 'e-title', 'e-to', 'e-time', 'e-place'].forEach((id) => { $(id).value = ''; $(id).dispatchEvent(new Event('input')); });
+      pics = []; video = null; paintMedia(); loadList();
+    }, (x) => msg('m-post', 'Chưa đăng được: ' + x.message)).then(() => { b.disabled = false; b.textContent = 'Đăng lên TV'; });
+  });
+
+  // ---------- danh sách, gỡ tin ----------
+  const KIND = { story: 'Bảng tin', ticker: 'Thông báo', event: 'Sự kiện' };
+  function loadList() {
+    TIN.call('mine', { pin: PIN }).then((j) => {
+      const items = (j.items || []).slice().sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+      if (!items.length) { $('list').innerHTML = '<p class="empty">Chưa có tin nào. Tin đăng ở trên sẽ hiện tại đây.</p>'; return; }
+      $('list').innerHTML = items.map((r) => {
+        const s = TIN.stateOf(r), img = r.images && r.images[0] && r.images[0].url;
+        const when = r.kind === 'event' ? 'Ngày ' + vn(r.event.from) + (r.event.to ? ' – ' + vn(r.event.to) : '') : vn(r.from) + ' – ' + vn(r.until);
+        const where = (r.cs || []).indexOf('*') > -1 ? 'Mọi cơ sở' : (r.cs || []).join(', ');
+        return `<div class="item"><div class="th" style="${img ? `background-image:url('${esc(img)}')` : ''}">${img ? '' : r.video ? '🎬' : r.kind === 'event' ? '📅' : '📣'}</div>
+          <div class="tx"><b>${esc(r.title || r.text)}</b><small><span class="st ${s.key}">${s.label}</span>${KIND[r.kind]} · ${when}${CS === '*' ? ' · ' + esc(where) : ''}</small></div>
+          <button type="button" data-id="${esc(r.id)}">Gỡ</button></div>`;
+      }).join('');
+    }, (x) => { $('list').innerHTML = `<p class="empty">Không tải được danh sách: ${esc(x.message)}</p>`; });
+  }
+  $('list').addEventListener('click', (e) => {
+    const id = e.target.dataset && e.target.dataset.id; if (!id) return;
+    if (!confirm('Gỡ tin này khỏi TV?')) return;
+    e.target.disabled = true; e.target.textContent = 'Đang gỡ…';
+    TIN.call('delete', { pin: PIN, id: id }).then(loadList, (x) => { alert('Chưa gỡ được: ' + x.message); loadList(); });
+  });
+})();
+</script>
+</body>
+</html>
