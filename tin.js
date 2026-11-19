@@ -10,7 +10,7 @@
   'use strict';
   // URL Apps Script (kết thúc bằng /exec). Để trống = chế độ thử: tin lưu ngay trong trình duyệt này,
   // PIN thử 000000 = mọi cơ sở, 111111 = cơ sở HP.
-  var API_URL = '';
+  var API_URL = 'https://script.google.com/macros/s/AKfycbwYyqJra9MI9xKEefL-aRkNYkV3B5YV173HEz6F40KJXaUF4w973cK436MFHXt5dm5uaA/exec';
   var LIMITS = { title: 48, tag: 14, text: 120, place: 40, time: 20, images: 8, videoMB: 10 };
   var KEY = { cache: 'tkd-tin-cache', demo: 'tkd-tin-demo', pin: 'tkd-tin-pin' };
 
