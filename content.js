@@ -54,7 +54,7 @@ window.TV = {
         'Phụ huynh vui lòng chờ ở khu vực dành riêng'] }
   ],
 
-  // ---- Ca học (khung "Ca học hôm nay"): tự lọc theo thứ, tự báo Đang tập / Sắp vào / Đã xong ----
+  // ---- Ca học (khung "Hôm nay"): tự lọc theo thứ, tự báo Đang tập / Sắp vào / Đã xong ----
   //   days: [thứ...] · start, end: 'HH:MM' · title: tên lớp · note: cấp đai, độ tuổi · coach · room (tuỳ chọn) · cs
   //   from, to (tuỳ chọn): khoảng ngày áp dụng (lịch hè, lịch Tết...)
   SCHEDULE: [
@@ -68,7 +68,7 @@ window.TV = {
     { days: [6, 0], start: '18:00', end: '19:00', title: 'Lớp Nâng cao', note: 'Đai xanh – đỏ', coach: 'Thầy Nguyễn Đình Toàn' }
   ],
 
-  // ---- Vinh danh (khung giữa bên phải): mỗi thẻ 8 giây ----
+  // ---- Vinh danh: khung đang tắt trên TV (bỏ từ 19/11/2026), dữ liệu giữ lại để bật lại khi cần ----
   //   type: 'star' (Võ sinh tiêu biểu) | 'belt' (Lên đai mới) | 'birthday' (Sinh nhật) | 'medal' (Huy chương)
   //   name · note · belt: mã đai (trang, vang_trang, vang, xanh_vang, xanh, do_xanh, do, den_1...) · photo (tuỳ chọn)
   //   from, to hoặc until: khoảng ngày hiện · cs

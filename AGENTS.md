@@ -6,8 +6,8 @@ Dựng theo khung Bản tin TV của VTNet (`~/Documents/1. Viettel/3. VTNET/Int
 ## Bản đồ
 - `content.js`: **toàn bộ nội dung**. Hướng dẫn từng trường ở đầu mỗi mục. Việc hằng ngày chỉ sửa file này.
   - `STORIES` Bảng tin (khung lớn trái): kiểu `image`, `slides`, `items` (video + ảnh), `points` (thẻ chữ đánh số).
-  - `SCHEDULE` Ca học: lặp theo thứ trong tuần, TV tự báo Đang tập / Còn n phút / Sắp tới, ẩn ca đã xong.
-  - `HONORS` Vinh danh: `star`, `belt`, `birthday`, `medal`; mỗi thẻ 8 giây.
+  - `SCHEDULE` Ca học (khung Hôm nay): lặp theo thứ trong tuần, TV tự báo Đang tập / Còn n phút / Sắp tới, ẩn ca đã xong.
+  - `HONORS` Vinh danh: **khung đang tắt trên TV** (thêm vào HONORS không hiện gì); bật lại = thêm khung `p-honor` vào `.side` trong `index.html` (chỉ Claude).
   - `AGENDA` Sắp diễn ra (4 mục gần nhất) · `TICKER` dòng chạy · `SAMPLE` nhãn "Dữ liệu mẫu".
 - `index.html`: giao diện và mã. Chỉ sửa khi đổi bố cục hoặc thêm kiểu tin mới.
 - `dang-tin.html`: **trang đăng tin** cho các cơ sở (điện thoại), không qua duyệt, vào bằng mã PIN cơ sở. Đăng được Bảng tin (≤ 8 ảnh hoặc 1 video MP4 ≤ 10 MB, ≤ 90 giây), Thông báo chạy chữ, Sự kiện; gỡ tin của mình. TV nhận tin trong khoảng 2 phút.
@@ -27,7 +27,7 @@ Dựng theo khung Bản tin TV của VTNet (`~/Documents/1. Viettel/3. VTNET/Int
 ## Công thức hay dùng
 - **Thêm tin có ảnh:** `sips -Z 1600 -s format jpeg -s formatOptions 80 "<ảnh gốc>" --out img/<ten-khong-dau>.jpg`, rồi thêm một mục vào `STORIES` (đặt `until` nếu chỉ chiếu vài ngày). Nhiều ảnh dùng `slides`.
 - **Thêm video:** chép vào `media/<ten>.mp4` (H.264), dùng `items: [{ type: 'video', src: 'media/<ten>.mp4' }]`. Nén về **≤ 10 MB** (cạnh dài ≤ 1280, bỏ tiếng vì TV phát câm): TV tải trọn file về máy lúc mở trang để phát không giật, file lớn thì tải lâu và tốn bộ nhớ TV.
-- **Ảnh thiết kế riêng cho Bảng tin (poster, thông báo):** khung ảnh trên TV 1920×1080 **1202×649** (tỷ lệ ~1,85:1, không phải 16:9); tiêu đề một dòng ≤ 48 ký tự, không còn dòng phụ `sub`. TV luôn hiện trọn ảnh (contain), phần trống phủ nền mờ; muốn kín khung thì dựng ảnh **1920×1036**, chữ cách mép ≥ 32 px (khung bo góc 20 px).
+- **Ảnh thiết kế riêng cho Bảng tin (poster, thông báo):** khung ảnh trên TV 1920×1080 **1202×702** (tỷ lệ ~1,71:1, không phải 16:9); tiêu đề một dòng ≤ 48 ký tự, không còn dòng phụ `sub`. TV luôn hiện trọn ảnh (contain), phần trống phủ nền mờ; muốn kín khung thì dựng ảnh **1920×1121**, chữ cách mép ≥ 32 px (khung bo góc 20 px).
 - **Dòng chạy:** tốc độ cố định `TICKER_SPEED` px/giây trong `content.js` (mặc định 150), không phụ thuộc độ dài nội dung.
 - **Vinh danh:** thêm `{ type, name, note, belt, until }` vào `HONORS`. Mã đai: trang, vang_trang, vang, xanh_vang, xanh, do_xanh, do, den_1 đến den_4. Ảnh chân dung (tuỳ chọn) `photo: 'img/vs-<ten>.jpg'`, ảnh vuông ~400px.
 - **Sinh nhật võ sinh:** `type: 'birthday'`, `from`/`to` quanh ngày sinh nhật để tự hiện, tự ẩn.
